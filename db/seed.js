@@ -112,7 +112,7 @@ async function getInitialImdb(movies) {
         const movieObj = Object.entries(movies)
         console.log("getting shit", movieObj)
         const transformedMovies = movieObj[1].map(m => {
-            console.log("second time around", movieObj[1])
+            console.log("second time around", m)
             return {
                 genre: "common",
                 title: m.title,
