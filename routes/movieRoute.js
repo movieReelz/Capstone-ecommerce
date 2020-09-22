@@ -6,7 +6,7 @@ const {
   getMovieByTitle,
 } = require("../db");
 
-movieRouter.get("/", async (req, res) => {
+movieRouter.get("/", async (req, res, next) => {
   try {
     const allMovies = await getAllMovies();
     res.send({ allMovies });
