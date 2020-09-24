@@ -12,9 +12,9 @@ const client = require('./client');
 //     }
 // }
 //create
-async function createCart(customerId){
+async function createCart(customerId) {
     try {
-        const {rows: [cart]} = await client.query(`
+        const { rows: [cart] } = await client.query(`
         INSERT INTO cart("customerId")
         VALUES ($1)
         RETURNING *;
@@ -27,16 +27,30 @@ async function createCart(customerId){
 }
 
 //update
-async function addMovieToCart(movieTitle, cartId){
+async function addMovieToCart(movieTitle, cartId) {
     try {
-        const {rows: [movie]} = await client.query(`
+        const { rows: [movie] } = await client.query(`
         UPDATE cart
         SET "movieTitle"=$1
         WHERE id=$2
         RETURNING *;
-        `,[movieTitle, cartId]);
+        `, [movieTitle, cartId]);
 
         return movie;
+    } catch (error) {
+        console.error(error);
+    }
+}
+async function addMovieCart(movieTitle, cartId) {
+    try {
+        const { rows: [cart] } = await client.query(`
+        INSERT INTO cart("movieTitle")
+        VALUES ($1)
+        WHERE "cartId"=$2
+        RETURNING *;
+            `, [movieTitle, cartId]);
+
+        return cart;
     } catch (error) {
         console.error(error);
     }
@@ -56,12 +70,12 @@ async function getCartByCustomer(customerId) {
 }
 
 //delete
-async function removeMovieFromCart(movieTitle){
+async function removeMovieFromCart(movieTitle) {
     try {
         await client.query(`
         DELETE FROM cart
         WHERE "movieTitle"=$1;
-        `,[movieTitle]);
+        `, [movieTitle]);
     } catch (error) {
         console.error(error);
     }
@@ -71,5 +85,6 @@ module.exports = {
     createCart,
     getCartByCustomer,
     addMovieToCart,
+    addMovieCart,
     removeMovieFromCart
 }

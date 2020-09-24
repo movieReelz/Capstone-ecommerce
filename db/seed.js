@@ -5,6 +5,7 @@ const {
   createCustomer,
   createMovies,
   getMovieByTitle,
+  addMovieCart,
   getAllMovies,
   createCart,
   createGenres,
@@ -49,7 +50,7 @@ async function createTables() {
             );
             CREATE TABLE movies(
                 id SERIAL PRIMARY KEY,
-                title VARCHAR (255) UNIQUE NOT NULL,
+                title VARCHAR (255) UNIQUE,
                 year VARCHAR(255),
                 length VARCHAR(255),
                 rating VARCHAR(255),
@@ -59,9 +60,10 @@ async function createTables() {
             );
             CREATE TABLE cart (
                 id SERIAL PRIMARY KEY,
+                "movieTitle" VARCHAR(50) REFERENCES movies(title),
                 "customerId" INTEGER REFERENCES customers(id),
                 subtotal VARCHAR (255),
-                UNIQUE("customerId")
+                UNIQUE("customerId", "movieTitle")
             );
             CREATE TABLE movies_cart (
                 "cartId" INTEGER REFERENCES cart(id),
@@ -149,7 +151,7 @@ async function createIntitialMovies() {
   console.log("making initial movies...");
   try {
     const movies = require("./movies.json");
-    for (i = 0; i < movies.length; i++) {
+    for (let i = 0; i < movies.length; i++) {
       const movie = movies[i];
       await createMovies({
         title: movie.title,
@@ -191,6 +193,7 @@ async function addMovieInCart() {
   console.log("adding movie...");
   try {
     await addMovieToCart("Mulan", 1);
+    // await addMovieToCart("Cuties", 1)
     await addMovieToCart("Dune", 2);
     await addMovieToCart("Hamilton", 3);
     console.log("finished adding movies..");

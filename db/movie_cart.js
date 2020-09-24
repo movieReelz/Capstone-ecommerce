@@ -14,13 +14,6 @@ async function addMovieToCart(movieId, cartId) {
             [movieId, cartId]
         );
         console.log("join movie to cart", movieId, cartId)
-
-
-
-
-
-
-
         return movie_cart;
     } catch (error) {
         throw error;
