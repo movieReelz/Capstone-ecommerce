@@ -209,9 +209,9 @@ async function initializeCarts() {
 async function addMovieInCart() {
   console.log("adding movie...");
   try {
-    await addMovieToCart(1, 1);
-    await addMovieToCart(2, 2);
-    await addMovieToCart(17, 3);
+    // await addMovieToCart(1, 1);
+    // await addMovieToCart(2, 2);
+    // await addMovieToCart(17, 3);
     console.log("finished adding movies..");
   } catch (error) {
     console.error(error);
