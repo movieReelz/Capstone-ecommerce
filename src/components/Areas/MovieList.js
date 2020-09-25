@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import "./MovieList.css";
 import MovieCard from "./MovieCard";
 import { getAllMovies } from "../../api";
