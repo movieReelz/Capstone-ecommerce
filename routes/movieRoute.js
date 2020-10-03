@@ -4,41 +4,48 @@ const {
   getAllMovies,
   getMovieById,
   getMovieByTitle,
-  moviesPaginated
+  moviesPaginated,
 } = require("../db");
 
 movieRouter.get("/", async (req, res, next) => {
   try {
-    const { pageSize = 10, pageNumber } = req.query
+    const {
+      pageSize = 10,
+      pageNumber,
+      // genre,
+      // searchInput,
+    } = req.query;
 
-    let movies
+    let movies;
     if (pageSize && pageNumber) {
       movies = await moviesPaginated(pageNumber, pageSize);
     } else {
       movies = await getAllMovies();
     }
-    
+
     res.send({ allMovies: movies });
   } catch ({ name, message }) {
     next({ name, message });
   }
 });
-movieRouter.get('/:movieId', async (req, res, next) => {
+movieRouter.get("/:movieId", async (req, res, next) => {
   try {
-    const id = req.params.movieId
-    const movie = await getMovieById(id)
+    const id = req.params.movieId;
+    const movie = await getMovieById(id);
     if (!movie) {
-      next({ name: "Id error", message: "no movie found by this id try again" })
-    }
-    else {
+      next({
+        name: "Id error",
+        message: "no movie found by this id try again",
+      });
+    } else {
       res.send({
-        movie
-      })
+        movie,
+      });
     }
   } catch ({ name, message }) {
-    next({ name, message })
+    next({ name, message });
   }
-})
+});
 movieRouter.post("/", async (req, res, next) => {
   const { title, genre, price, rated } = req.body;
   const movieData = {};

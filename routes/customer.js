@@ -2,28 +2,26 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const customersRouter = express.Router();
-const { createCustomer, getCustomerByUsername, getCustomer, createCart, getCustomerById } = require("../db");
+const {
+  createCustomer,
+  getCustomerByUsername,
+  getCustomer,
+  createCart,
+  getCustomerById,
+} = require("../db");
 const { requireCustomer } = require("./utils");
-
 
 customersRouter.get("/:customerId", requireCustomer, async (req, res, next) => {
   try {
-    const getCustomer = req.params.customerId
-    console.log("fucking work", getCustomer)
-    const customer = await getCustomerById(getCustomer.id)
-    console.log("fucking work or im done...please", customer)
-    res.send({ customer })
+    const getCustomer = req.params.customerId;
+    console.log("fucking work", getCustomer);
+    const customer = await getCustomerById(getCustomer.id);
+    console.log("fucking work or im done...please", customer);
+    res.send({ customer });
   } catch (error) {
     console.error(error);
   }
-})
-
-
-
-
-
-
-
+});
 
 customersRouter.post("/register", async (req, res, next) => {
   try {
@@ -58,7 +56,7 @@ customersRouter.post("/register", async (req, res, next) => {
             expiresIn: "5w",
           }
         );
-        const cart = await createCart(customer.id)
+        const cart = await createCart(customer.id);
 
         // delete customer;
         // delete customer.password;
@@ -71,6 +69,7 @@ customersRouter.post("/register", async (req, res, next) => {
 });
 
 customersRouter.post("/login", async (req, res, next) => {
+  console.log("logging");
   const { username, password } = req.body;
   // request must have both
   if (!username || !password) {

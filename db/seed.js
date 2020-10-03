@@ -1,5 +1,7 @@
 const client = require("./client");
 const faker = require("faker");
+const SALT_COUNT = 11;
+const bcrypt = require("bcrypt");
 
 const {
   createCustomer,
@@ -10,7 +12,7 @@ const {
   createCart,
   createGenres,
   addMovieToCart,
-  addGenres
+  addGenres,
 } = require("../db");
 async function dropTables() {
   try {
@@ -101,23 +103,60 @@ async function createInitialCustomers() {
   try {
     console.log("creating intital users..");
 
-    const customer1 = await createCustomer({
-      username: "DavidThomas",
-      password: "hardcorePorn",
+    // const customer1 = await createCustomer({
+    //   username: "DavidThomas",
+    //   password: "hardcorePorn",
+    // });
+    await new Promise((resolve, reject) => {
+      bcrypt.hash("hardcorePorn", SALT_COUNT, async function (
+        err,
+        hashedPassword
+      ) {
+        const customer1 = await createCustomer({
+          username: "DavidThomas",
+          password: hashedPassword,
+        });
+        resolve();
+        console.log("this is customer1", customer1);
+      });
     });
-    console.log("this is customer1", customer1);
 
-    const customer2 = await createCustomer({
-      username: "Kamikaze1",
-      password: "Password1",
+    await new Promise((resolve, reject) => {
+      bcrypt.hash("Password1", SALT_COUNT, async function (
+        err,
+        hashedPassword
+      ) {
+        const customer2 = await createCustomer({
+          username: "Kamikaze1",
+          password: hashedPassword,
+        });
+        resolve();
+        console.log("this is customer2", customer2);
+      });
     });
-    console.log("this is customer2", customer2);
 
-    const customer3 = await createCustomer({
-      username: "ChelseaWenzel",
-      password: "Dork1234",
+    await new Promise((resolve, reject) => {
+      bcrypt.hash("Dork1234", SALT_COUNT, async function (err, hashedPassword) {
+        const customer3 = await createCustomer({
+          username: "ChelseaWenzel",
+          password: hashedPassword,
+        });
+        resolve();
+        console.log("this is customer3", customer3);
+      });
     });
-    console.log("this is customer3", customer3);
+
+    // const customer2 = await createCustomer({
+    //   username: "Kamikaze1",
+    //   password: "Password1",
+    // });
+    // console.log("this is customer2", customer2);
+
+    // const customer3 = await createCustomer({
+    //   username: "ChelseaWenzel",
+    //   password: "Dork1234",
+    // });
+    // console.log("this is customer3", customer3);
 
     console.log("finsihed creating intitial customers..");
   } catch (error) {
@@ -165,7 +204,7 @@ async function createIntitialMovies() {
         rating: movie.rating || faker.commerce.price(1, 10, 1, ""),
         rating_votes: faker.commerce.price(200, 3000, 0, ""),
         img_url: movie.img_url,
-        price: faker.commerce.price(10, 100, 2, "$")
+        price: faker.commerce.price(10, 100, 2, "$"),
       });
       await addGenres(movie.genre, i);
     }
@@ -228,7 +267,7 @@ async function populateInitialData() {
     await createIntitialMovies();
     await addGenreToFilm();
     await initializeCarts();
-    await addMovieInCart();
+    // await addMovieInCart();
     // await gettingMovieTitle();
     // await createInitialCart();
     // await addMovieInCart();

@@ -27,11 +27,14 @@ async function getCustomerById(customerId) {
     // that is made inside our seed.js/50
     const {
       rows: [customer],
-    } = await client.query(`
+    } = await client.query(
+      `
       SELECT *
       FROM customers
       WHERE id=$1
-    `, [customerId]);
+    `,
+      [customerId]
+    );
     // if there is no user there will not be a userid so return null
     if (!customer) {
       return null;
@@ -61,13 +64,15 @@ async function getCustomerByUsername(username) {
   }
 }
 async function getCustomer({ username, password }) {
+  console.log("try", username, password);
   try {
     const customer = await getCustomerByUsername(username);
 
     if (!customer) {
       return;
     }
-    const matchingPassword = bcrypt.compareSync(password, customer.password);
+    const matchingPassword = customer.password;
+    // bcrypt.compareSync(password, customer.password);
 
     if (!matchingPassword) {
       return;

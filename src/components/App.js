@@ -9,10 +9,13 @@ import CheckoutPage from "./pages/CheckoutPage";
 import MoviePage from "./pages/MoviePage";
 import "./App.css";
 import Pagination from "./Areas/Pagination";
+import { getAllMovies } from "../api/index";
 
 function App() {
   const [customer, setCustomer] = useState({});
-  const [cart, setCart] = useState({})
+  const [cart, setCart] = useState({});
+  const [searchInput, setSearchInput] = useState("test");
+  const [movies, setMovies] = useState([]);
 
   function localStorageCustomer() {
     if (localStorage.getItem("customer")) {
@@ -24,11 +27,10 @@ function App() {
   }
   function localStorageCart() {
     if (localStorage.getItem("customer")) {
-      const localStorageCart = localStorage.getItem("cart")
-      return localStorageCart
-
+      const localStorageCart = localStorage.getItem("cart");
+      return localStorageCart;
     } else {
-      return {}
+      return {};
     }
   }
 
@@ -38,32 +40,81 @@ function App() {
 
   useEffect(() => {
     setCart(localStorageCart());
-  }, [])
+  }, []);
 
   return (
     <Router>
       <div className="app">
         <header>
-          <Header customer={customer} setCustomer={setCustomer} />
+          <Header
+            customer={customer}
+            setCustomer={setCustomer}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            movies={movies}
+            setMovies={setMovies}
+          />
         </header>
         <Switch>
           <Route
             path="/register"
             exact
             render={() => (
-              <RegisterPage customer={customer} setCustomer={setCustomer} />
+              <RegisterPage
+                customer={customer}
+                setCustomer={setCustomer}
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                movies={movies}
+                setMovies={setMovies}
+              />
             )}
           />
           <Route
             path="/login"
             exact
             render={() => (
-              <LoginPage customer={customer} setCustomer={setCustomer} />
+              <LoginPage
+                customer={customer}
+                setCustomer={setCustomer}
+                searchInput={searchInput}
+                setSearchInput={setSearchInput}
+                movies={movies}
+                setMovies={setMovies}
+              />
             )}
           />
-          <Route path="/checkout" exact component={CheckoutPage} cart={cart} setCart={setCart} customer={customer} setCustomer={setCustomer} />
-          <Route path="/movies" exact component={MoviePage} />
-          <Route path="/" exact component={Home} />
+          <Route
+            path="/checkout"
+            exact
+            component={CheckoutPage}
+            cart={cart}
+            setCart={setCart}
+            customer={customer}
+            setCustomer={setCustomer}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            movies={movies}
+            setMovies={setMovies}
+          />
+          <Route
+            path="/movies"
+            exact
+            component={MoviePage}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            movies={movies}
+            setMovies={setMovies}
+          />
+          <Route
+            path="/"
+            exact
+            component={Home}
+            searchInput={searchInput}
+            setSearchInput={setSearchInput}
+            movies={movies}
+            setMovies={setMovies}
+          />
         </Switch>
 
         <footer>

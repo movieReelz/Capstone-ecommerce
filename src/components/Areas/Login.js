@@ -12,6 +12,8 @@ export default function Login({ customer, setCustomer }) {
       .then((customer) => {
         localStorage.setItem("customer", JSON.stringify(customer));
         setCustomer(customer);
+        setUsername("");
+        setPassword("");
       })
       .catch((error) => {
         throw error;
@@ -47,6 +49,7 @@ export default function Login({ customer, setCustomer }) {
                 type="password"
               />
             </FormGroup>
+
             <input type="submit"></input>
           </form>
         </div>

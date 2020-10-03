@@ -6,7 +6,19 @@ import GenreDropdown from "./Areas/GenreDropdown";
 import Button from "./Areas/Button";
 import "./Header.css";
 
-const Header = ({ customer, setCustomer }) => {
+// const inputDebounced = (onChange, time = 500) => {
+//   let interval
+//   return (e) => {
+//     clearTimeout(interval)
+
+//     interval = setTimeout(() => {
+//       interval = undefined
+//       onChange(e)
+//     }, time)
+//   }
+// }
+
+const Header = ({ customer, setCustomer, searchInput, setSearchInput }) => {
   //first parameter gives us the state of the data layer
   //second parameter gives dispatch(actions), changes the data layer
 
@@ -47,7 +59,12 @@ const Header = ({ customer, setCustomer }) => {
         </div>
 
         <div className="header__search">
-          <input type="text" className="header__searchInput" />
+          <input
+            type="text"
+            className="header__searchInput"
+            onChange={(e) => setSearchInput(e.target.value)}
+            value={searchInput}
+          />
           <GenreDropdown />
           <SearchIcon className="header__searchIcon" />
         </div>
@@ -108,19 +125,19 @@ const Header = ({ customer, setCustomer }) => {
             )}
           </>
         ) : (
-            <>
-              {button && (
-                <Button buttonStyle="btn--outline" to="/register">
-                  SIGN UP
-                </Button>
-              )}
-              {button && (
-                <Button buttonStyle="btn--outline" to="/login">
-                  LOGIN
-                </Button>
-              )}
-            </>
-          )}
+          <>
+            {button && (
+              <Button buttonStyle="btn--outline" to="/register">
+                SIGN UP
+              </Button>
+            )}
+            {button && (
+              <Button buttonStyle="btn--outline" to="/login">
+                LOGIN
+              </Button>
+            )}
+          </>
+        )}
       </div>
     </nav>
   );
