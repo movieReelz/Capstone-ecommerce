@@ -3,6 +3,7 @@ import "./Subtotal.css";
 import CurrencyFormat from "react-currency-format";
 import { useStateValue } from "../StateProvider";
 import { getCartTotal } from "../reducer";
+import Button from "./Button";
 
 function Subtotal() {
   const [{ cart }, dispatch] = useStateValue();
@@ -23,6 +24,10 @@ function Subtotal() {
         thousandSeparator={true}
         prefix={"$"}
       />
+
+      <Button buttonStyle="btn--outline" to="/CheckoutSuccess">
+        Process to Checkout
+      </Button>
     </div>
   );
 }
